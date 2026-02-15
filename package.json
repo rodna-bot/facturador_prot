@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.4",
+    "axios": "^1.13.5",
+    "lucide-react": "^0.564.0",
+    "react-router-dom": "^7.13.0",
+    "styled-jsx": "^5.1.7"
+  }
+}

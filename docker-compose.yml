@@ -1,0 +1,42 @@
+
+services:
+  # Base de Datos
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=recipe
+      - POSTGRES_PASSWORD=RecipePassword
+      - POSTGRES_DB=recipe_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  # Backend (NestJS / Recipe)
+  api:
+    build: ./recipe
+      
+    restart: always
+    ports:
+      - '4000:4000' # Tu API se escuchará en el puerto 4000
+    environment:
+      - DATABASE_URL=postgresql://recipe:RecipePassword@postgres:5432/recipe_db
+    depends_on:
+      - postgres
+    volumes:
+      - ./certs:/certs:ro
+
+  # Frontend (Next.js / Facturador)
+  web:
+    build: ./frontend2
+       
+    restart: always
+    ports:
+      - '3000:3000' # Tu Web se verá en el puerto 3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
