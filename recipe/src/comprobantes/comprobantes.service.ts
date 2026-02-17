@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comprobante } from './entities/comprobante.entity';
 import { CreateComprobanteDto } from './dto/create-comprobante.dto';
+import { GetReporteComprobantesDto } from './dto/get-reporte-comprobante-dto';
 
 @Injectable()
 export class ComprobantesService {
@@ -24,6 +25,28 @@ export class ComprobantesService {
     });
     
     return await this.comprobanteRepository.save(nuevo);
+  }
+    async generarReporte(query: GetReporteComprobantesDto) {
+  const { fecha_inicio, fecha_fin, tipos_documento } = query;
+  
+  const queryBuilder = this.comprobanteRepository.createQueryBuilder('comprobante')
+    .leftJoinAndSelect('comprobante.tipo_documento', 'tipoDoc')
+    .leftJoinAndSelect('comprobante.cliente', 'cliente');
+
+  if (fecha_inicio && fecha_fin) {
+    queryBuilder.andWhere('comprobante.fecha_emision BETWEEN :inicio AND :fin', {
+      inicio: fecha_inicio,
+      fin: fecha_fin,
+    });
+  }
+
+  if (tipos_documento && tipos_documento.length > 0) {
+    queryBuilder.andWhere('comprobante.codigo_tipo_documento IN (:...ids)', {
+      ids: tipos_documento,
+    });
+  }
+
+  return await queryBuilder.getMany();
   }
 
   async findAll() {

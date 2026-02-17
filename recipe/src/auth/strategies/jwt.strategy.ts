@@ -18,7 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // IMPORTANTE: Asegúrate de que los nombres coincidan con lo que pusiste en el login
     return { 
       userId: payload.sub, 
-      email: payload.email 
+      email: payload.email,
+      role: payload.role  
     };
   }
 }

@@ -28,7 +28,6 @@ export class AuthController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/roles')
   async getRoles() {
     return this.authService.getRoles();
@@ -43,7 +42,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Get('admin')
+  @Get('/admin')
   getAdminData(@Req() req) {
     return {
       message: 'Información exclusiva para administradores',

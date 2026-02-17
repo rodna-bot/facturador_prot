@@ -12,7 +12,7 @@ export class ClientesController {
     return this.clientesService.create(createClienteDto);
   }
 
-  @Get()
+  @Get('/list')
   findAll() {
     return this.clientesService.findAll();
   }
