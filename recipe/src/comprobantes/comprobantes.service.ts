@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between,Repository } from 'typeorm';
 import { Comprobante } from './entities/comprobante.entity';
 import { CreateComprobanteDto } from './dto/create-comprobante.dto';
 import { GetReporteComprobantesDto } from './dto/get-reporte-comprobante-dto';
@@ -47,6 +47,34 @@ export class ComprobantesService {
   }
 
   return await queryBuilder.getMany();
+  }
+  async findByDateRange(fechaInicioStr: string, fechaFinStr: string) {
+    // Función interna para convertir dd-mm-yyyy a objeto Date
+    const parseDate = (dateStr: string, endOfDay = false) => {
+      const [day, month, year] = dateStr.split('-').map(Number);
+      // Los meses en JS van de 0 a 11
+      const date = new Date(year, month - 1, day);
+      if (endOfDay) {
+        date.setHours(23, 59, 59, 999);
+      } else {
+        date.setHours(0, 0, 0, 0);
+      }
+      return date;
+    };
+
+    const inicio = parseDate(fechaInicioStr);
+    const fin = parseDate(fechaFinStr, true);
+
+    return await this.comprobanteRepository.find({
+      where: {
+        fecha_emision: Between(inicio, fin),
+      },
+      // Traemos las relaciones para que el listado sea útil
+      relations: ['cliente', 'usuario', 'sede', 'producto', 'tipo_documento'],
+      order: {
+        fecha_emision: 'DESC',
+      },
+    });
   }
 
   async findAll() {

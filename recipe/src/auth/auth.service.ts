@@ -19,7 +19,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // ✅ REGISTER
   async register(registerDto: RegisterDto) {
 
     const existe = await this.usuarioRepository.findOne({

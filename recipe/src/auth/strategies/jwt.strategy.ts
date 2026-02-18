@@ -15,11 +15,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // IMPORTANTE: Asegúrate de que los nombres coincidan con lo que pusiste en el login
     return { 
       userId: payload.sub, 
       email: payload.email,
-      role: payload.role  
+      roles: payload.roles  
     };
   }
 }
