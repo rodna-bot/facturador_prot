@@ -19,27 +19,29 @@ import { SedesModule } from './sedes/sedes.module';
 import { ProductosModule } from './productos/productos.module';
 import { ComprobantesModule } from './comprobantes/comprobantes.module';
 import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
+import { typeOrmConfig } from './database/typeorm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'postgres', // Nombre del servicio en docker-compose
-      port: 5432,
-      username: 'recipe',
-      password: 'RecipePassword',
-      database: 'recipe_db',
-      entities: [
-        Usuario, Rol, Sede, 
-        Producto, Cliente, Comprobante, 
-        TipoDocumento
-      ],
-      synchronize: true, 
-      autoLoadEntities: true,
-      // RECOMENDADO: Intentar conectar 5 veces si falla al inicio
-      retryAttempts: 5,
-      retryDelay: 3000,
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'postgres',
+    //   host: 'postgres', // Nombre del servicio en docker-compose
+    //   port: 5432,
+    //   username: 'recipe',
+    //   password: 'RecipePassword',
+    //   database: 'recipe_db',
+    //   entities: [
+    //     Usuario, Rol, Sede,
+    //     Producto, Cliente, Comprobante,
+    //     TipoDocumento
+    //   ],
+    //   synchronize: true,
+    //   autoLoadEntities: true,
+    //   // RECOMENDADO: Intentar conectar 5 veces si falla al inicio
+    //   retryAttempts: 5,
+    //   retryDelay: 3000,
+    // }),
+    TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
     ClientesModule,
     SedesModule,
