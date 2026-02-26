@@ -3,22 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-// Importación de Entidades
-import { Usuario } from './auth/entities/usuario.entity';
-import { Rol } from './auth/entities/rol.entity';
-import { Sede } from './sedes/entities/sede.entity';
-import { Producto } from './productos/entities/producto.entity';
-import { Cliente } from './clientes/entities/cliente.entity';
-import { Comprobante } from './comprobantes/entities/comprobante.entity';
-import { TipoDocumento } from './tipos-documento/entities/tipo-documento.entity';
-
 // Importación de Módulos de Negocio
-import { AuthModule } from './auth/auth.module';
-import { ClientesModule } from './clientes/clientes.module';
-import { SedesModule } from './sedes/sedes.module';
-import { ProductosModule } from './productos/productos.module';
-import { ComprobantesModule } from './comprobantes/comprobantes.module';
+import { AuthModule } from './auth_old/auth.module';
 import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
+import { EmpresaModule } from './empresa/empresa.module';
 import { typeOrmConfig } from './database/typeorm.config';
 
 @Module({
@@ -43,11 +31,8 @@ import { typeOrmConfig } from './database/typeorm.config';
     // }),
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
-    ClientesModule,
-    SedesModule,
-    ProductosModule,
-    ComprobantesModule,
     TiposDocumentoModule,
+    EmpresaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

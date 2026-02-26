@@ -1,0 +1,7 @@
+export enum EstadoSunat {
+  PENDIENTE = 'PENDIENTE',
+  ENVIADO = 'ENVIADO',
+  ACEPTADO = 'ACEPTADO',
+  RECHAZADO = 'RECHAZADO',
+  OBSERVADO = 'OBSERVADO',
+}
